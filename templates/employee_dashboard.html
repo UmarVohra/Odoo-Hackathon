@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        ::-webkit-scrollbar { 
+            display: none;
+        }
+
+        body {
+            background-color: #f9fafb;
+            min-height: 100vh;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .min-h-screen {
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background-color: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 1.5rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .space-x-4 > * + * {
+            margin-left: 1rem;
+        }
+
+        .space-x-2 > * + * {
+            margin-left: 0.5rem;
+        }
+
+        .text-2xl {
+            font-size: 1.5rem;
+            line-height: 2rem;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .text-gray-900 {
+            color: #111827;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+
+        .text-gray-500 {
+            color: #6b7280;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+
+        .w-8 {
+            width: 2rem;
+        }
+
+        .h-8 {
+            height: 2rem;
+        }
+
+        .rounded-full {
+            border-radius: 9999px;
+        }
+
+        /* Main Content */
+        main {
+            padding: 1.5rem;
+        }
+
+        .mb-8 {
+            margin-bottom: 2rem;
+        }
+
+        /* Action Buttons */
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .bg-primary {
+            background-color: #6366f1;
+        }
+
+        .bg-primary:hover {
+            background-color: #4f46e5;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        .bg-green-500 {
+            background-color: #22c55e;
+        }
+
+        .bg-green-500:hover {
+            background-color: #16a34a;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Summary Cards */
+        .grid {
+            display: grid;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+
+        @media (min-width: 768px) {
+            .md\:grid-cols-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        .gap-6 {
+            gap: 1.5rem;
+        }
+
+        .bg-white {
+            background-color: white;
+        }
+
+        .rounded-xl {
+            border-radius: 0.75rem;
+        }
+
+        .shadow-sm {
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .border {
+            border-width: 1px;
+        }
+
+        .border-gray-100 {
+            border-color: #f3f4f6;
+        }
+
+        .p-6 {
+            padding: 1.5rem;
+        }
+
+        .hover\:shadow-md:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        .transition-shadow {
+            transition-property: box-shadow;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+
+        .mb-1 {
+            margin-bottom: 0.25rem;
+        }
+
+        .text-gray-600 {
+            color: #4b5563;
+        }
+
+        .text-3xl {
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+        }
+
+        .w-12 {
+            width: 3rem;
+        }
+
+        .h-12 {
+            height: 3rem;
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+        }
+
+        .bg-orange-100 {
+            background-color: #ffedd5;
+        }
+
+        .text-orange-600 {
+            color: #ea580c;
+        }
+
+        .bg-yellow-100 {
+            background-color: #fef3c7;
+        }
+
+        .text-yellow-600 {
+            color: #ca8a04;
+        }
+
+        .bg-green-100 {
+            background-color: #dcfce7;
+        }
+
+        .text-green-600 {
+            color: #16a34a;
+        }
+
+        /* Table Section */
+        .overflow-hidden {
+            overflow: hidden;
+        }
+
+        .px-6 {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        .py-4 {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .border-b {
+            border-bottom-width: 1px;
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .overflow-x-auto {
+            overflow-x: auto;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #f9fafb;
+        }
+
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .text-xs {
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+
+        .uppercase {
+            text-transform: uppercase;
+        }
+
+        .tracking-wider {
+            letter-spacing: 0.05em;
+        }
+
+        tbody {
+            background-color: white;
+        }
+
+        .divide-y > * + * {
+            border-top-width: 1px;
+        }
+
+        .divide-gray-200 > * + * {
+            border-color: #e5e7eb;
+        }
+
+        .hover\:bg-gray-50:hover {
+            background-color: #f9fafb;
+        }
+
+        .whitespace-nowrap {
+            white-space: nowrap;
+        }
+
+        .mr-3 {
+            margin-right: 0.75rem;
+        }
+
+        .text-gray-700 {
+            color: #374151;
+        }
+
+        .inline-flex {
+            display: inline-flex;
+        }
+
+        .px-2 {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+        .py-1 {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+
+        .bg-red-100 {
+            background-color: #fee2e2;
+        }
+
+        .text-red-800 {
+            color: #991b1b;
+        }
+
+        .text-green-800 {
+            color: #166534;
+        }
+
+        .bg-blue-100 {
+            background-color: #dbeafe;
+        }
+
+        .text-blue-800 {
+            color: #1e40af;
+        }
+
+        .bg-gray-100 {
+            background-color: #f3f4f6;
+        }
+
+        .text-gray-800 {
+            color: #1f2937;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-100 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Employee Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Profile" class="w-8 h-8 rounded-full">
+                        <span class="text-sm font-medium text-gray-500">Sarah Johnson</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="p-6">
+            <!-- Action Buttons -->
+            <section class="mb-8">
+                <div class="flex flex-wrap gap-4">
+                    <button class="btn bg-primary">
+                        <i class="fas fa-upload"></i>
+                        Upload Receipt
+                    </button>
+                    <button class="btn bg-green-500">
+                        <i class="fas fa-plus"></i>
+                        New Expense
+                    </button>
+                </div>
+            </section>
+
+            <!-- Expense Summary -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-1">To Submit</p>
+                            <p class="text-3xl font-bold text-gray-900">₹5,467</p>
+                        </div>
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-clock text-orange-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-1">Waiting Approval</p>
+                            <p class="text-3xl font-bold text-gray-900">₹33,674</p>
+                        </div>
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-hourglass-half text-yellow-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-1">Approved</p>
+                            <p class="text-3xl font-bold text-gray-900">₹500</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-circle-check text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Expense Table -->
+            <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100">
+                    <h2 class="text-lg font-semibold text-gray-900">Recent Expenses</h2>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paid By</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg" alt="Employee" class="w-8 h-8 rounded-full mr-3">
+                                        <span class="text-sm font-medium text-gray-900">John Smith</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Client meeting lunch</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">2024-01-15</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Meals</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Personal</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Business lunch with client</td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">₹2,450</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Draft</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Employee" class="w-8 h-8 rounded-full mr-3">
+                                        <span class="text-sm font-medium text-gray-900">Emily Davis</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Office supplies purchase</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">2024-01-14</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Office</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Company Card</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Stationery and printer ink</td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">₹1,200</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Submitted</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Employee" class="w-8 h-8 rounded-full mr-3">
+                                        <span class="text-sm font-medium text-gray-900">Michael Brown</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Travel expenses</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">2024-01-13</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Travel</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Personal</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Flight and hotel booking</td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">₹15,500</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Approved</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-6.jpg" alt="Employee" class="w-8 h-8 rounded-full mr-3">
+                                        <span class="text-sm font-medium text-gray-900">Lisa Wilson</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Software subscription</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">2024-01-12</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Software</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Company Card</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Annual license renewal</td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">₹8,900</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">Rejected</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg" alt="Employee" class="w-8 h-8 rounded-full mr-3">
+                                        <span class="text-sm font-medium text-gray-900">David Lee</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Team building event</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">2024-01-11</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Entertainment</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Personal</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">Quarterly team outing</td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">₹5,200</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Submitted</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.querySelectorAll('.btn')[0].addEventListener('click', function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.pdf,.jpg,.jpeg,.png';
+            input.click();
+        });
+
+        document.querySelectorAll('.btn')[1].addEventListener('click', function() {
+            alert('New Expense form would open here');
+        });
+    </script>
+</body>
+</html>

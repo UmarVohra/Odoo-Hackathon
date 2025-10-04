@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    /* Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #f5f0eb, #e9dfd6);
+    }
+
+    .container {
+      display: flex;
+      width: 80%;
+      max-width: 1000px;
+      height: 600px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    /* Left Side */
+    .left {
+      flex: 1;
+      background: linear-gradient(160deg, #d7c1d7, #b195b1, #e8ded8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-size: 1.8rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 20px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Right Side */
+    .right {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      background: #fdfbf9;
+    }
+
+    .form-card {
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .form-card h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #4b3b3b;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #4b3b3b;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d9cfc7;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: #fff;
+      transition: 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #b195b1;
+      box-shadow: 0 0 6px rgba(177, 149, 177, 0.5);
+    }
+
+    /* Dropdown Styling */
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg fill='%23635564' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 20px;
+      padding-right: 35px;
+      cursor: pointer;
+    }
+
+    /* Button */
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #b195b1, #635564);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(99,85,100,0.3);
+    }
+
+    .login-link {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #635564;
+    }
+
+    .login-link a {
+      color: #b195b1;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .left {
+        height: 180px;
+        font-size: 1.5rem;
+      }
+
+      .right {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      Welcome to Our Community 🌿
+    </div>
+    <div class="right">
+      <div class="form-card">
+        <h2>Create Account</h2>
+        <form>
+          <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" placeholder="Enter your full name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+          </div>
+          <div class="form-group">
+            <label for="country">Country</label>
+            <select id="country" required>
+              <option value="">Select Country</option>
+              <option value="india">India</option>
+              <option value="usa">USA</option>
+              <option value="france">France</option>
+            </select>
+          </div>
+          <button type="submit" class="btn">Sign Up</button>
+          <div class="login-link">
+            Already have an account? <a href="#">Login</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

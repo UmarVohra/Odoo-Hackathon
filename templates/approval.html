@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approval Workflow Settings</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background-color: #f9fafb;
+            color: #333;
+        }
+
+        /* Left Navigation Sidebar */
+        #left-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 64px;
+            background-color: #1f2937;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
+        }
+
+        .logo-square {
+            width: 32px;
+            height: 32px;
+            background-color: #22c55e;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        .nav-icons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            margin-top: 16px;
+            flex-grow: 1;
+        }
+
+        .nav-icons span {
+            color: #9ca3af;
+            cursor: pointer;
+            transition: color 0.2s;
+            font-size: 20px;
+        }
+
+        .nav-icons span:hover {
+            color: #d1d5db;
+        }
+
+        .nav-icons span.active {
+            color: #60a5fa;
+        }
+
+        .user-initials {
+            width: 32px;
+            height: 32px;
+            background-color: #4b5563;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 12px;
+            margin-top: auto;
+        }
+
+        /* Settings Sidebar */
+        #settings-sidebar {
+            position: fixed;
+            left: 64px;
+            top: 0;
+            bottom: 0;
+            width: 240px;
+            background-color: #fff;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .sidebar-header {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px;
+        }
+
+        .sidebar-header .title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-header .subtitle {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .sidebar-section {
+            padding: 8px 0;
+        }
+
+        .sidebar-section-title {
+            padding: 8px 16px;
+            font-weight: 500;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 8px 16px;
+            color: #2563eb;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+        }
+
+        .sidebar-link:hover {
+            background-color: #f3f4f6;
+        }
+
+        .sidebar-link.active {
+            background-color: #f3f4f6;
+            font-weight: 500;
+        }
+
+        /* Main Header */
+        #main-header {
+            position: fixed;
+            top: 0;
+            left: 304px;
+            right: 48px;
+            height: 64px;
+            background-color: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            z-index: 10;
+        }
+
+        #main-header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .header-actions button {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 8px;
+        }
+
+        .header-actions button:hover {
+            color: #374151;
+        }
+
+        /* Main Content */
+        #main-content {
+            margin-left: 304px;
+            margin-right: 48px;
+            padding-top: 64px;
+            padding-bottom: 32px;
+        }
+
+        .content-wrapper {
+            padding: 32px;
+        }
+
+        /* Info Banner */
+        .info-banner {
+            padding: 16px;
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .info-banner i {
+            color: #2563eb;
+            margin-right: 12px;
+            margin-top: 4px;
+        }
+
+        .info-banner-text {
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .info-banner-link {
+            color: #1d4ed8;
+            font-weight: 500;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+        /* Card */
+        .card {
+            background-color: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .checkbox-wrapper {
+            margin-top: 4px;
+            margin-right: 12px;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .section-content label {
+            font-weight: 500;
+            color: #111827;
+            cursor: pointer;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .section-description {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        /* Approvers Section */
+        .approvers-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .approvers-title h3 {
+            font-size: 18px;
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .approvers-title p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn-primary i {
+            margin-right: 8px;
+        }
+
+        /* Table */
+        .table-container {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #f9fafb;
+        }
+
+        th {
+            padding: 12px 24px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 500;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tbody tr {
+            border-top: 1px solid #e5e7eb;
+            transition: background-color 0.2s;
+        }
+
+        tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+        tbody tr.dragging {
+            opacity: 0.5;
+        }
+
+        td {
+            padding: 16px 24px;
+        }
+
+        .order-cell {
+            display: flex;
+            align-items: center;
+        }
+
+        .drag-handle {
+            color: #9ca3af;
+            margin-right: 8px;
+            cursor: move;
+        }
+
+        .order-badge {
+            background-color: #dbeafe;
+            color: #1e40af;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 9999px;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #111827;
+        }
+
+        .user-role {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .required-cell {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .required-cell input[type="checkbox"] {
+            margin-top: 4px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .required-label {
+            margin-left: 8px;
+        }
+
+        .required-text {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #dc2626;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 4px;
+        }
+
+        .delete-btn:hover {
+            color: #991b1b;
+        }
+
+        .table-note {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+
+        /* Input Field */
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper input[type="number"] {
+            width: 96px;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-wrapper input[type="number"]:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .input-suffix {
+            margin-left: 8px;
+            color: #6b7280;
+        }
+
+        /* Summary Box */
+        .summary-box {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .summary-box i {
+            color: #2563eb;
+            margin-right: 12px;
+            margin-top: 4px;
+        }
+
+        .summary-content {
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .summary-content p {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .summary-content ul {
+            list-style-type: disc;
+            list-style-position: inside;
+        }
+
+        .summary-content li {
+            margin-bottom: 4px;
+        }
+
+        .text-blue {
+            color: #2563eb;
+            font-weight: 500;
+        }
+
+        .text-red {
+            color: #dc2626;
+            font-weight: 500;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .btn-secondary {
+            padding: 8px 24px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background-color: #fff;
+            color: #374151;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f9fafb;
+        }
+
+        .btn-save {
+            padding: 8px 24px;
+            background-color: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+        }
+
+        .btn-save:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Right Sidebar */
+        #right-sidebar {
+            position: fixed;
+            right: 0;
+            top: 64px;
+            bottom: 0;
+            width: 48px;
+            background-color: #fff;
+            border-left: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
+        }
+
+        #right-sidebar button {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            margin-bottom: 24px;
+            font-size: 16px;
+            padding: 4px;
+        }
+
+        #right-sidebar button:hover {
+            color: #374151;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Left Navigation Sidebar -->
+<div id="left-sidebar">
+    <div class="logo-square"></div>
+    <div class="nav-icons">
+        <span><i class="far fa-folder"></i></span>
+        <span><i class="far fa-comment"></i></span>
+        <span><i class="far fa-bell"></i></span>
+        <span><i class="fas fa-chart-line"></i></span>
+        <span class="active"><i class="fas fa-list"></i></span>
+        <span><i class="fas fa-paper-plane"></i></span>
+        <span><i class="fas fa-chart-pie"></i></span>
+        <span><i class="fas fa-gift"></i></span>
+        <span><i class="far fa-star"></i></span>
+    </div>
+    <div class="user-initials">JS</div>
+</div>
+
+<!-- Settings Sidebar -->
+<div id="settings-sidebar">
+    <div class="sidebar-header">
+        <div class="title">ExpenseFlow</div>
+        <div class="subtitle">Admin Panel</div>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Workflow Settings</div>
+        <span class="sidebar-link active">Approval Workflows</span>
+        <span class="sidebar-link">Expense Categories</span>
+        <span class="sidebar-link">Budget Limits</span>
+        <span class="sidebar-link">User Roles</span>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">System Settings</div>
+        <span class="sidebar-link">Notifications</span>
+        <span class="sidebar-link">Integrations</span>
+        <span class="sidebar-link">Security Settings</span>
+        <span class="sidebar-link">Audit Logs</span>
+    </div>
+</div>
+
+<!-- Main Header -->
+<div id="main-header">
+    <h1>Approval Workflow Settings</h1>
+    <div class="header-actions">
+        <button><i class="fas fa-circle-question"></i></button>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div id="main-content">
+    <div class="content-wrapper">
+        <!-- Info Banner -->
+        <div class="info-banner">
+            <i class="fas fa-circle-info"></i>
+            <div>
+                <span class="info-banner-text">Configure multi-level approval workflows for expense management. Set up sequential or parallel approvals with customizable conditions.</span>
+                <span class="info-banner-link">Learn more about approval workflows</span>
+            </div>
+        </div>
+
+        <!-- Main Configuration Card -->
+        <div class="card">
+            <!-- Manager Approval Setting -->
+            <div class="section">
+                <div class="section-header">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="manager-approver" checked>
+                    </div>
+                    <div class="section-content">
+                        <label for="manager-approver">Is manager an approver?</label>
+                        <p class="section-description">When enabled, the employee's direct manager will be automatically added as the first approver in the workflow sequence.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Approvers List Section -->
+            <div class="section">
+                <div class="approvers-header">
+                    <div class="approvers-title">
+                        <h3>Approvers List</h3>
+                        <p>Configure the approval sequence and requirements. Drag and drop to reorder.</p>
+                    </div>
+                    <button class="btn-primary" id="add-approver-btn">
+                        <i class="fas fa-plus"></i>
+                        Add Approver
+                    </button>
+                </div>
+
+                <!-- Approvers Table -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Order</th>
+                                <th>User</th>
+                                <th style="width: 150px;">Required</th>
+                                <th style="width: 100px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approvers-tbody">
+                            <tr class="approver-row" data-order="1">
+                                <td>
+                                    <div class="order-cell">
+                                        <i class="fas fa-grip-vertical drag-handle"></i>
+                                        <span class="order-badge order-number">1</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-cell">
+                                        <img class="user-avatar" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg" alt="Avatar">
+                                        <div>
+                                            <div class="user-name">John Smith</div>
+                                            <div class="user-role">Finance Manager</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="required-cell">
+                                        <input type="checkbox" checked>
+                                        <div class="required-label">
+                                            <div class="required-text">Required approval</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="approver-row" data-order="2">
+                                <td>
+                                    <div class="order-cell">
+                                        <i class="fas fa-grip-vertical drag-handle"></i>
+                                        <span class="order-badge order-number">2</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-cell">
+                                        <img class="user-avatar" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Avatar">
+                                        <div>
+                                            <div class="user-name">Sarah Johnson</div>
+                                            <div class="user-role">Department Head</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="required-cell">
+                                        <input type="checkbox">
+                                        <div class="required-label">
+                                            <div class="required-text">Optional approval</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="approver-row" data-order="3">
+                                <td>
+                                    <div class="order-cell">
+                                        <i class="fas fa-grip-vertical drag-handle"></i>
+                                        <span class="order-badge order-number">3</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-cell">
+                                        <img class="user-avatar" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg" alt="Avatar">
+                                        <div>
+                                            <div class="user-name">Michael Chen</div>
+                                            <div class="user-role">CFO</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="required-cell">
+                                        <input type="checkbox">
+                                        <div class="required-label">
+                                            <div class="required-text">Optional approval</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="table-note">
+                    <strong>Required:</strong> When checked, this approver's approval is mandatory for the expense to be approved, regardless of other conditions.
+                </p>
+            </div>
+
+            <!-- Sequential Approval Setting -->
+            <div class="section">
+                <div class="section-header">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="sequential-approval">
+                    </div>
+                    <div class="section-content">
+                        <label for="sequential-approval">Enable Sequential Approval</label>
+                        <p class="section-description">When enabled, approvers must approve in the specified order (sequential). When disabled, all approvers can approve simultaneously (parallel).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Minimum Approval Percentage -->
+            <div class="section">
+                <div class="input-group">
+                    <label for="approval-percentage">Minimum Approval Percentage</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="approval-percentage" value="60" min="1" max="100">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <p class="section-description" style="margin-top: 8px;">Set the minimum percentage of approvers that must approve for the expense to be approved (applies only to non-required approvers).</p>
+                </div>
+            </div>
+
+            <!-- Approval Logic Summary -->
+            <div class="section">
+                <h3 style="font-size: 18px; font-weight: 500; color: #111827; margin-bottom: 12px;">Approval Logic Summary</h3>
+                <div class="summary-box" id="approval-summary">
+                    <i class="fas fa-circle-info"></i>
+                    <div class="summary-content">
+                        <p>Current approval conditions:</p>
+                        <ul>
+                            <li>Manager approval is <span class="text-blue">required</span> (if employee has a manager)</li>
+                            <li><span class="text-blue">John Smith</span> approval is <span class="text-red">required</span></li>
+                            <li><span class="text-blue">60%</span> of remaining approvers must approve <span style="font-weight: 500;">OR</span> any required approver approves</li>
+                            <li>Approval process is <span class="text-blue">parallel</span> (all approvers can approve simultaneously)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn-secondary">Cancel</button>
+                <button class="btn-save">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Right Sidebar -->
+<div id="right-sidebar">
+    <button><i class="fas fa-bell"></i></button>
+    <button><i class="fas fa-comment"></i></button>
+    <button><i class="fas fa-link"></i></button>
+    <button><i class="fas fa-plus"></i></button>
+    <button><i class="fas fa-user-group"></i></button>
+    <button><i class="fas fa-magnifying-glass"></i></button>
+    <button><i class="fas fa-message"></i></button>
+    <button><i class="fas fa-circle-question"></i></button>
+</div>
+
+<script>
+// Initialize drag and drop for approvers table
+const tbody = document.getElementById('approvers-tbody');
+const sortable = Sortable.create(tbody, {
+    handle: '.drag-handle',
+    animation: 150,
+    ghostClass: 'dragging',
+    onEnd: function(evt) {
+        updateOrderNumbers();
+        updateApprovalSummary();
+    }
+});
+
+// Update order numbers after drag and drop
+function updateOrderNumbers() {
+    const rows = tbody.querySelectorAll('.approver-row');
+    rows.forEach((row, index) => {
+        const orderSpan = row.querySelector('.order-number');
+        orderSpan.textContent = index + 1;
+        row.setAttribute('data-order', index + 1);
+    });
+}
+
+// Update approval logic summary
+function updateApprovalSummary() {
+    const managerCheckbox = document.getElementById('manager-approver');
+    const sequentialCheckbox = document.getElementById('sequential-approval');
+    const percentageInput = document.getElementById('approval-percentage');
+    
+    const summaryDiv = document.getElementById('approval-summary');
+    let summaryHTML = '<i class="fas fa-circle-info"></i><div class="summary-content"><p>Current approval conditions:</p><ul>';
+    
+    if (managerCheckbox.checked) {
+        summaryHTML += '<li>Manager approval is <span class="text-blue">required</span> (if employee has a manager)</li>';
+    }
+    
+    // Add required approvers
+    const rows = tbody.querySelectorAll('.approver-row');
+    rows.forEach(row => {
+        const checkbox = row.querySelector('input[type="checkbox"]');
+        const name = row.querySelector('.user-name').textContent;
+        if (checkbox.checked) {
+            summaryHTML += <li><span class="text-blue">${name}</span> approval is <span class="text-red">required</span></li>;
+        }
+    });
+    
+    summaryHTML += <li><span class="text-blue">${percentageInput.value}%</span> of remaining approvers must approve <span style="font-weight: 500;">OR</span> any required approver approves</li>;
+    
+    const approvalType = sequentialCheckbox.checked ? 'sequential' : 'parallel';
+    const approvalDescription = sequentialCheckbox.checked ? 'approvers must approve in order' : 'all approvers can approve simultaneously';
+    summaryHTML += <li>Approval process is <span class="text-blue">${approvalType}</span> (${approvalDescription})</li>;
+    
+    summaryHTML += '</ul></div>';
+    summaryDiv.innerHTML = summaryHTML;
+}
+
+// Event listeners for dynamic updates
+document.getElementById('manager-approver').addEventListener('change', updateApprovalSummary);
+document.getElementById('sequential-approval').addEventListener('change', updateApprovalSummary);
+document.getElementById('approval-percentage').addEventListener('input', updateApprovalSummary);
+
+// Event listeners for required checkboxes
+document.addEventListener('change', function(e) {
+    if (e.target.type === 'checkbox' && e.target.closest('#approvers-tbody')) {
+        updateApprovalSummary();
+    }
+});
+
+// Initialize summary on page load
+updateApprovalSummary();
+</script>
+
+</body>
+</html>
