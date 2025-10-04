@@ -1,20 +1,9 @@
-# from django.db import models
-# from .views import *
 
-
-
-
-
-# # Create your models here.
-
-# class Company(models.Model):
-#     name = models.CharField(max_length=50)
-#     emial = models.EmailField(max_length=150)
-#     password = models.CharField(max_length=20)
-#     country = models.
 
 from django.db import models
 import requests
+from django.db import models
+from django.contrib.auth.models import User
 
 def get_country_choices():
     url = "https://restcountries.com/v3.1/all?fields=name"
@@ -57,6 +46,7 @@ class Company(models.Model):
 
 
 class User(models.Model):
+    company_id = models.ForeignKey(User, on_delete=models.CASCADE)  
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=255) 
@@ -72,8 +62,7 @@ class User(models.Model):
     def __str__(self):
         return self.name
     
-from django.db import models
-from django.contrib.auth.models import User  # assuming employee_id links to a User
+ 
 
 class Expense(models.Model):
     
@@ -94,7 +83,7 @@ class Expense(models.Model):
     ]
 
 
-    employee = models.ForeignKey(User, on_delete=models.CASCADE)  
+    employee_id = models.ForeignKey(User, on_delete=models.CASCADE)  
     description = models.TextField()
     date = models.DateField(auto_now_add=True)  
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
